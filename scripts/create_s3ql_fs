@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-set -x
+#set -x
 umask 0377
 mkdir -p /root/.s3ql
 
@@ -15,6 +15,7 @@ fi
 
 #create container if it does not exist
 if [ ! "x${SWIFT_AUTH_ENDPOINT}" = "x"]; then
+    echo "Creating swift-container ${S3QL_STORAGE_CONTAINER}"
     echo "Temporary" > temp
     swift -A ${SWIFT_AUTH_ENDPOINT} --insecure -U ${S3QL_LOGIN} -K ${S3QL_PASSWD} upload ${S3QL_STORAGE_CONTAINER} temp
     swift -A ${SWIFT_AUTH_ENDPOINT} --insecure -U ${S3QL_LOGIN} -K ${S3QL_PASSWD} delete ${S3QL_STORAGE_CONTAINER} temp
