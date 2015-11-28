@@ -14,7 +14,7 @@ if [ ! -f /root/.s3ql/authinfo2 ]; then
 fi
 
 #create container if it does not exist
-if [ ! "x${SWIFT_AUTH_ENDPOINT}" = "x"]; then
+if [ ! "x${SWIFT_AUTH_ENDPOINT}" = "x" ]; then
     echo "Creating swift-container ${S3QL_STORAGE_CONTAINER}"
     echo "Temporary" > temp
     swift -A ${SWIFT_AUTH_ENDPOINT} --insecure -U ${S3QL_LOGIN} -K ${S3QL_PASSWD} upload ${S3QL_STORAGE_CONTAINER} temp

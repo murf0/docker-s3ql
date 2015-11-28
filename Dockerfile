@@ -10,6 +10,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 	ulimit -n 30000 && \
+	sed -i 's#KILL_PROCESS_TIMEOUT = 5#KILL_PROCESS_TIMEOUT = 120#g' /sbin/my_init && \
+	sed -i 's#KILL_ALL_PROCESSES_TIMEOUT = 5#KILL_ALL_PROCESSES_TIMEOUT = 120#g' /sbin/my_init && \
 	mkdir -p /etc/my_init.d
 
 # End S3QL FS
