@@ -22,6 +22,6 @@ SWIFT_AUTH_ENDPOINT=<HTTP AUTH API endpoint (skip if container is already create
 ## Hubic
 Im using hubic 10tb for €5 per month. It's an OVH company, so it's running in France. 
 
-(https://hubic.com)
+[hubic.com](https://hubic.com)
 Of if you want to use my affiliate link (I'll get an extra 500gb when you sign up)
-(https://hubic.com/en/offers?referral=KRMTJR)
+[hubic.com/en/offers?referral=KRMTJR](https://hubic.com/en/offers?referral=KRMTJR)
