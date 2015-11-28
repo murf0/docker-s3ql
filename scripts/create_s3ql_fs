@@ -2,9 +2,10 @@
 #
 #set -x
 umask 0377
-mkdir -p /root/.s3ql
 
+#Check for authfile presence and create from environment variables.
 if [ ! -f /root/.s3ql/authinfo2 ]; then
+    mkdir -p /root/.s3ql
     echo "[swift]
     storage-url: ${S3QL_TYPE}://${S3QL_STORAGE}
     backend-login: ${S3QL_LOGIN}
@@ -28,12 +29,17 @@ fsck.s3ql ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAG
 signal=$?
 
 if [ $signal -eq 18 ] ; then
-        echo "filestem not in use"
+        echo "FSCK did not find a Filesystem, Creating new"
         echo mkfs.s3ql --plain -L $S3QL_STORAGE_CONTAINER --max-obj-size 10240 ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/
         mkfs.s3ql --plain -L $S3QL_STORAGE_CONTAINER --max-obj-size 10240 ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/
 elif [ $signal -ne 0 ] ; then
-        echo "not safe to mount"
+        echo "FSCK failed, Refusing to mount, please fix errors manually"
         exit 1
 fi
-echo mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
-mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+if [ ! "${S3QL_CACHESIZE}x" = "x" ]; then
+    echo mount.s3ql --log /root/.s3ql/mount.log --allow-other --cachesize ${S3QL_CACHESIZE} --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+    mount.s3ql --log /root/.s3ql/mount.log --allow-other --cachesize ${S3QL_CACHESIZE} --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+else
+    echo mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+    mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+fi

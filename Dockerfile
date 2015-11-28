@@ -14,11 +14,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	sed -i 's#KILL_ALL_PROCESSES_TIMEOUT = 5#KILL_ALL_PROCESSES_TIMEOUT = 120#g' /sbin/my_init && \
 	mkdir -p /etc/my_init.d
 
-# End S3QL FS
 
-
-# Config env variables
-ENV 	 S3QL_TYPE=swift \
+# Environment Configuration variables Needed to function properly.
+ENV  S3QL_TYPE=swift \
 	 S3QL_STORAGE=server:port \
 	 S3QL_STORAGE_CONTAINER=storage_container \
 	 S3QL_STORAGE_FS=Filesystem_Name \
@@ -27,9 +25,10 @@ ENV 	 S3QL_TYPE=swift \
 	 S3QL_LOGIN=username \
 	 S3QL_PASSWD=password \
 	 S3QL_FSPASSWD=FS_password \
+	 S3QL_CACHESIZE= \
 	 SWIFT_AUTH_ENDPOINT="HTTP AUTH API endpoint (skip if container is already created)"
 
-#Adding all our scripts
+#Adding Startup, shutdown
 COPY scripts/create_s3ql_fs /etc/my_init.d/01_create_s3ql_fs
 COPY scripts/rc.local_shutdown /etc/rc.local_shutdown
 

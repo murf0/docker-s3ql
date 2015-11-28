@@ -18,5 +18,6 @@ s3ql-data:
     - 'S3QL_PASSWD=<password>'
     - 'S3QL_FSPASSWD=<FS password>'
     - 'SWIFT_AUTH_ENDPOINT=<HTTP AUTH API endpoint (skip if container is already created)>'
+    - 'S3QL_CACHESIZE=<In KB or if empty use auto-cache size>'
   volumes:
     - '/data'

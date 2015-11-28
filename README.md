@@ -15,7 +15,9 @@ S3QL_MOUNT_POINT=/mnt/data\
 S3QL_LOGIN=<username> \
 S3QL_PASSWD=<password> \
 S3QL_FSPASSWD=<FS password> \
+S3QL_CACHESIZE=<In KB or empty if you wish to use auto, auto will use up all of the space on your _host_> \
 SWIFT_AUTH_ENDPOINT=<HTTP AUTH API endpoint (skip if container is already created)>
+
 ```
 
 ### Run it
@@ -31,3 +33,7 @@ Im using hubic 10tb for €5 per month. It's an OVH company, so it's running in 
 [hubic.com](https://hubic.com)
 Of if you want to use my affiliate link (I'll get an extra 500gb when you sign up)
 [hubic.com/en/offers?referral=KRMTJR](https://hubic.com/en/offers?referral=KRMTJR)
+
+## License
+MIT For original code in this repository see LICENSE text
+GPL for the code originating from raghon1 repository.
