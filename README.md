@@ -18,6 +18,12 @@ S3QL_FSPASSWD=<FS password> \
 SWIFT_AUTH_ENDPOINT=<HTTP AUTH API endpoint (skip if container is already created)>
 ```
 
+### Run it
+To run you must use "--privileged" or "--cap-add mknod --cap-add sys_admin --device=/dev/fuse" Since it uses fuse to mount the volume.
+
+### Shutdown
+Changed timeout in my_init from 5sec to 120 sec to allow for syncing of metadata and data to cloud.
+
 
 ## Hubic
 Im using hubic 10tb for €5 per month. It's an OVH company, so it's running in France. 
