@@ -24,6 +24,7 @@ RUN /build.sh
 COPY scripts/create_s3ql_fs /etc/my_init.d/01_create_s3ql_fs
 COPY scripts/rc.local_shutdown /etc/rc.local_shutdown
 
+EXPOSE 111/udp 2049/tcp
 
 # Baseimage init process
 ENTRYPOINT ["/sbin/my_init"]
