@@ -45,5 +45,8 @@ else
 fi
 
 #Do NFS stuff
-echo "${S3QL_MOUNT_POINT}       ${S3QL_SUBNET}(rw,fsid=0,insecure,no_subtree_check,async)" > /etc/exports
+echo "${S3QL_MOUNT_POINT}   ${S3QL_SUBNET}(fsid=0,rw,sync,insecure,no_subtree_check,nohide,anonuid=1000,anongid=1000,all_squash,crossmnt)" > /etc/exports
+sed -i 's#NEED_SVCGSSD=""#NEED_SVCGSSD=no#g' /etc/default/nfs-kernel-server
+
+service rpcbind restart
 service nfs-kernel-server restart

@@ -36,11 +36,11 @@ Of if you want to use my affiliate link (I'll get an extra 500gb when you sign u
 
 #Usage in other containers.
 Since this mount is only container local (not mounted in the host file system.) No other containers can use the filesystem directly (eg via --volumes-from) 
-Instead you can use sshfs
+Instead you can use NFS
 ```
-apt-get install sshfs
-sshfs root@<s3ql IP>:/ /<mntpoint>
+mount <s3ql ip>:/folder/already/setup/to/be/shared /mountpoint
 ```
+Remember the host server must have the nfs-kernel module installed also.
 
 ## License
 MIT For original code in this repository see LICENSE text
