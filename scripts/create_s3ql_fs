@@ -43,3 +43,7 @@ else
     echo mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
     mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
 fi
+
+#Do NFS stuff
+echo "${S3QL_MOUNT_POINT}       ${S3QL_SUBNET}(rw,fsid=0,insecure,no_subtree_check,async)" > /etc/exports
+service nfs-kernel-server restart

@@ -34,6 +34,14 @@ Im using hubic 10tb for €5 per month. It's an OVH company, so it's running in 
 Of if you want to use my affiliate link (I'll get an extra 500gb when you sign up)
 [hubic.com/en/offers?referral=KRMTJR](https://hubic.com/en/offers?referral=KRMTJR)
 
+#Usage in other containers.
+Since this mount is only container local (not mounted in the host file system.) No other containers can use the filesystem directly (eg via --volumes-from) 
+Instead you can use sshfs
+```
+apt-get install sshfs
+sshfs root@<s3ql IP>:/ /<mntpoint>
+```
+
 ## License
 MIT For original code in this repository see LICENSE text
 GPL for the code originating from raghon1 repository.
