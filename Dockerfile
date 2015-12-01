@@ -1,21 +1,6 @@
 FROM		phusion/baseimage
 MAINTAINER	Mikael Mellgren <mikael@murf.se>
 
-# Dependencies
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    add-apt-repository -y ppa:nikratio/s3ql && \
-	apt-get update && \
-	apt-get install --no-install-recommends -y software-properties-common s3ql ca-certificates python-swiftclient nfs-kernel-server && \
-	apt-get upgrade --no-install-recommends -y && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-	ulimit -n 30000 && \
-	mkdir -p /run/rpc_pipefs/nfs && \
-	sed -i 's#KILL_PROCESS_TIMEOUT = 5#KILL_PROCESS_TIMEOUT = 120#g' /sbin/my_init && \
-	sed -i 's#KILL_ALL_PROCESSES_TIMEOUT = 5#KILL_ALL_PROCESSES_TIMEOUT = 120#g' /sbin/my_init && \
-	mkdir -p /etc/my_init.d
-
-
 # Environment Configuration variables Needed to function properly.
 ENV  S3QL_TYPE=swift \
 	 S3QL_STORAGE=server:port \
@@ -30,9 +15,15 @@ ENV  S3QL_TYPE=swift \
 	 S3QL_SUBNET=10.7.0.0/16 \
 	 SWIFT_AUTH_ENDPOINT="HTTP AUTH API endpoint (skip if container is already created)"
 
+# Dependencies
+COPY build.sh /build.sh
+RUN chmod 755 /build.sh
+RUN /build.sh
+
 #Adding Startup, shutdown
 COPY scripts/create_s3ql_fs /etc/my_init.d/01_create_s3ql_fs
 COPY scripts/rc.local_shutdown /etc/rc.local_shutdown
+
 
 # Baseimage init process
 ENTRYPOINT ["/sbin/my_init"]
