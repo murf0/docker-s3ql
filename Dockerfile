@@ -21,8 +21,10 @@ RUN chmod 755 /build.sh
 RUN /build.sh
 
 #Adding Startup, shutdown
-COPY create_s3ql_fs /etc/service/s3ql/run
+COPY s3ql.run /etc/service/s3ql/run
 RUN chmod 755 /etc/service/s3ql/run
+COPY s3ql.finish /etc/service/s3ql/finish
+RUN chmod 755 /etc/service/s3ql/finish
 
 EXPOSE 111/udp 2049/tcp
 
