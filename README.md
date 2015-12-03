@@ -16,6 +16,7 @@ S3QL_LOGIN=<username> \
 S3QL_PASSWD=<password> \
 S3QL_FSPASSWD=<FS password> \
 S3QL_CACHESIZE=<In KB or empty if you wish to use auto, auto will use up all of the space on your _host_> \
+S3QL_SUBNET=<subnet ex 172.17.0./16> \
 SWIFT_AUTH_ENDPOINT=<HTTP AUTH API endpoint (skip if container is already created)>
 
 ```
@@ -41,7 +42,23 @@ Instead you can use NFS
 mount <s3ql ip>:/folder/already/setup/to/be/shared /mountpoint
 ```
 Remember the host server must have the nfs-kernel module installed also.
+And of course the server mounting needs to run in "--privileged" mode also.
+This is a _security_ issue. A compromised container running in privileged mode means a compromised host. (Running the s3ql in privileged mode is "ok-ish" since it is not exposing any services to the world)
 
-## License
-MIT For original code in this repository see LICENSE text
-GPL for the code originating from raghon1 repository.
+
+##NFS mount in host instead.
+Basically query docker for the ip of the s3ql container (On name..) then mount on that ip.  Remember to set S3QL_SUBNET accordingly on the container. 
+```
+mount -t nfs $(docker inspect $(docker ps -a | grep s3ql | awk '{print $1}') | grep IPAddress\" | awk -F\" '{print $4}'):/ <mount_point>
+```
+
+
+##Docker volumes plugins
+Instead there is a couple of docker-volume plugins you can use: 
+https://github.com/SvenDowideit/docker-volumes-nfs
+https://github.com/gondor/docker-volume-netsh
+
+But that forces you to expose the Ports for NFSv4 111 and 2049
+
+#License
+MIT For original code in this repository, see LICENSE text

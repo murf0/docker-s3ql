@@ -16,8 +16,5 @@ sed -i 's#KILL_ALL_PROCESSES_TIMEOUT = 5#KILL_ALL_PROCESSES_TIMEOUT = 120#g' /sb
 mkdir -p /etc/my_init.d
 
 sed -i 's#NEED_SVCGSSD=""#NEED_SVCGSSD=no#g' /etc/default/nfs-kernel-server
-echo "[Mapping]
-Nobody-User = nobody
-Nobody-Group = nogroup"  > /etc/idmapd.conf
 service rpcbind restart
 service nfs-kernel-server restart
