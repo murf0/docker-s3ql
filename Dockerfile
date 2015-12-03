@@ -24,6 +24,10 @@ RUN /build.sh
 COPY scripts/create_s3ql_fs /etc/my_init.d/01_create_s3ql_fs
 COPY scripts/rc.local_shutdown /etc/rc.local_shutdown
 
+#Adding Startup, shutdown
+COPY scripts/create_s3ql_fs /etc/service/s3ql/run
+RUN chmod 755 /etc/service/s3ql/run
+
 EXPOSE 111/udp 2049/tcp
 
 # Baseimage init process

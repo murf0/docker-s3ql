@@ -1,6 +1,13 @@
 #!/bin/sh
 #
 #set -x
+
+#Do NFS stuff
+echo "${S3QL_MOUNT_POINT}   ${S3QL_SUBNET}(fsid=0,rw,sync,insecure,no_subtree_check,anonuid=1000,anongid=1000,crossmnt)" > /etc/exports
+exportfs -rav
+service rpcbind restart
+service nfs-kernel-server restart
+
 umask 0377
 
 #Check for authfile presence and create from environment variables.
@@ -36,15 +43,11 @@ elif [ $signal -ne 0 ] ; then
         echo "FSCK failed, Refusing to mount, please fix errors manually"
         exit 1
 fi
+
 if [ ! "${S3QL_CACHESIZE}x" = "x" ]; then
-    echo mount.s3ql --log /root/.s3ql/mount.log --allow-other --cachesize ${S3QL_CACHESIZE} --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
-    mount.s3ql --log /root/.s3ql/mount.log --allow-other --cachesize ${S3QL_CACHESIZE} --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+    echo mount.s3ql --fg --nfs --log /root/.s3ql/mount.log --allow-other --cachesize ${S3QL_CACHESIZE} --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+    mount.s3ql --fg --nfs --log /root/.s3ql/mount.log --allow-other --cachesize ${S3QL_CACHESIZE} --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
 else
-    echo mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
-    mount.s3ql --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+    echo mount.s3ql --fg  --nfs --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
+    mount.s3ql --fg --nfs --log /root/.s3ql/mount.log --allow-other --compress zlib ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/ ${S3QL_MOUNT_POINT}
 fi
-#Do NFS stuff
-echo "${S3QL_MOUNT_POINT}   ${S3QL_SUBNET}(fsid=0,rw,sync,insecure,no_subtree_check,anonuid=1000,anongid=1000,crossmnt)" > /etc/exports
-exportfs -rav
-service rpcbind restart
-service nfs-kernel-server restart
