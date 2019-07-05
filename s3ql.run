@@ -37,8 +37,8 @@ signal=$?
 
 if [ $signal -eq 18 ] ; then
         echo "FSCK did not find a Filesystem, Creating new"
-        echo mkfs.s3ql --plain -L $S3QL_STORAGE_CONTAINER --max-obj-size 10240 ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/
-        mkfs.s3ql --plain -L $S3QL_STORAGE_CONTAINER --max-obj-size 10240 ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/
+        echo mkfs.s3ql -L $S3QL_STORAGE_CONTAINER --max-obj-size 10240 ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/
+        mkfs.s3ql  -L $S3QL_STORAGE_CONTAINER --max-obj-size 10240 ${S3QL_TYPE}://${S3QL_STORAGE}/${S3QL_STORAGE_CONTAINER}/${S3QL_STORAGE_FS}/
 elif [ $signal -ne 0 ] ; then
         echo "FSCK failed, Refusing to mount, please fix errors manually"
         exit 1
